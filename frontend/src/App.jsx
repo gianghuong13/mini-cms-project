@@ -1,20 +1,25 @@
 import { useState, useEffect } from 'react'
 import './App.css'
+import ProductList from './components/ProductList'
 
 function App() {
-  const [message, setMessage] = useState('')
-
-  useEffect(() => {
-    fetch("http://localhost:1337/api/ping")
-      .then(res => res.json())
-      .then(data => setMessage(data.message))
-      .catch(() => setMessage("Error calling API"))
-  }, []);
-
+  
   return (
     <>
-      <h1>Welcome to My CMS</h1>
-      <p>Ping result: {message}</p>
+      <header>
+        <h1>This is header</h1>
+      </header>
+      <div className='main-layout'>
+        <aside className='sidebar'>
+          <ul>
+            <li>Dashboard</li>
+            <li>Products</li>
+          </ul>
+        </aside>
+        <main className='content'>
+          <ProductList />
+        </main>
+      </div>
     </>
   )
 }

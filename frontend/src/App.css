@@ -1,6 +1,5 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
+  margin: 0;
 }
 
 header {
@@ -12,7 +11,7 @@ header {
 }
 
 .sidebar {
-    width: 200px;
+    width: 300px;
     margin-right: 10px;
     background-color: rgba(122, 121, 121, 0.636);
 }

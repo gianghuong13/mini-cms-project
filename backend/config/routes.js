@@ -9,6 +9,6 @@
  */
 
 module.exports.routes = {
-
+    'GET /api/ping': 'PingController.ping'
 
 };

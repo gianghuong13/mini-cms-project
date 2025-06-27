@@ -36,31 +36,33 @@ function App() {
     }
     
   return (
-    <>
-      <header>
-        <h1>This is header</h1>
-      </header>
-      <div className='main-layout'>
-        <aside className='sidebar'>
-          <ul>
-            <li>Dashboard</li>
-            <li>Products</li>
-          </ul>
-        </aside>
-        <main className='content'>
-          <ProductForm 
-            onAdd={handleAddProduct}
-            onEdit={handleEditProduct}
-            productToEdit={productToEdit}
-            editIndex={editIndex}/>
-          <ProductList 
-            products={products} 
-            onEdit={selectEditProduct}
-            onDelete={handleDeleteProduct}/>
-        </main>
-      </div>
-    </>
-  )
+    <div className='h-screen flex flex-col px-3'>
+        <header className='bg-gray-200 shadow px-6 py-10 flex justify-between items-center'>
+          <h1 className='text-2xl font-semibold'>Welcome to CMS</h1>
+          <div>Tài khoản</div>
+        </header>
+
+        <div className='flex flex-1 overflow-hidden'>
+          <aside className='bg-emerald-500 text-white w-64 p-4 overflow-y-auto rounded-md'>
+            <nav className='space-y-2'>
+              <a href="#" className='block p-2 rounded-2xl hover:bg-green-400'>Dashboard</a>
+              <a href="#" className='block p-2 rounded-2xl hover:bg-green-400'>Products</a>
+            </nav>
+          </aside>
+          <main className='flex-1 p-6 overflow-y-auto bg-white'>
+            <ProductForm 
+              onAdd={handleAddProduct}
+              onEdit={handleEditProduct}
+              productToEdit={productToEdit}
+              editIndex={editIndex}/>
+            <ProductList 
+              products={products} 
+              onEdit={selectEditProduct}
+              onDelete={handleDeleteProduct}/>
+          </main>
+        </div>
+    </div>
+  );
 }
 
 export default App

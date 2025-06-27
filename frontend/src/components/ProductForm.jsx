@@ -1,14 +1,27 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
-const ProductForm = ({ onAdd }) => {
+const ProductForm = ({ onAdd, onEdit, productToEdit, editIndex }) => {
     const [productName, setProductName] = useState('');
     const [productPrice, setProductPrice] = useState('');
+
+    useEffect(() => {
+        if (productToEdit) {
+            setProductName(productToEdit.name);
+            setProductPrice(productToEdit.price);
+        }
+    }, [productToEdit])
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         if (!productName || !productPrice) return; 
-        onAdd({ name:productName, price: parseInt(productPrice)})
+        const newProduct = {  name:productName, price: parseInt(productPrice) };
+        if (editIndex !== null) {
+            onEdit(editIndex, newProduct);
+        } else {
+            onAdd(newProduct);
+        }
+
         setProductName('')
         setProductPrice('')
     };
@@ -17,6 +30,7 @@ const ProductForm = ({ onAdd }) => {
     <>
         <div>
             <form onSubmit={handleSubmit}>
+                <h3>{editIndex !== null ? 'Edit Product' : 'Add product'}</h3>
                 <div>
                     <label htmlFor="name">Product Name:
                         <input 
@@ -35,7 +49,7 @@ const ProductForm = ({ onAdd }) => {
                             onChange={e => setProductPrice(e.target.value)}/>
                     </label>
                 </div>
-                <button type="submit">Add product</button>
+                <button type="submit">{editIndex !== null ? "Edit" : "Add"}</button>
             </form>
         </div>
     </>

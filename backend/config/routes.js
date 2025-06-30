@@ -9,6 +9,11 @@
  */
 
 module.exports.routes = {
-    'GET /api/ping': 'PingController.ping'
+    'GET /api/ping': 'PingController.ping',
 
+    'GET /api/products': 'ProductController.find',
+    'GET /api/products/:id': 'ProductController.findOne',
+    'POST /api/products': 'ProductController.create',
+    'PUT /api/products/:id': 'ProductController.update',
+    'DELETE /api/products/:id': 'ProductController.destroy',
 };

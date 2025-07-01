@@ -13,12 +13,12 @@ const ProductList = ({ products, onEdit, onDelete }) => {
                     <h4 className="text-lg font-semibold mt-2">{p.name}</h4>
                     <p className='text-gray-400 mb-2'>{p.price} VND</p>
                     <button 
-                        onClick={() => onEdit(p, idx)}
+                        onClick={() => onEdit(p.id)}
                         className='bg-green-500 px-2 py-1 mx-2 rounded-md text-white'
                         >Edit
                     </button>
                     <button 
-                        onClick={() => onDelete(idx)}
+                        onClick={() => onDelete(p.id)}
                         className='bg-gray-500 px-2 py-1 rounded-md text-white'
                         >Delete
                     </button>

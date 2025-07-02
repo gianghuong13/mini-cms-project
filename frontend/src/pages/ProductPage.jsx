@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import Header from '../components/Header'
-import Sidebar from '../components/Sidebar'
 import ProductList from '../components/ProductList'
 import ProductForm from '../components/ProductForm'
 
@@ -50,30 +48,22 @@ const ProductPage = () => {
     }
 
   return (
-    <div className='h-screen flex flex-col px-3'>
-        <Header />
+    <div>
+        <ProductForm 
+            onAdd={handleAddProduct}
+            onEdit={handleEditProduct}
+            productToEdit={productToEdit}
+        />
 
-        <div className='flex flex-1 overflow-hidden'>
-            <Sidebar />
-            <main className='flex-1 p-6 overflow-y-auto bg-white'>
-
-                <ProductForm 
-                    onAdd={handleAddProduct}
-                    onEdit={handleEditProduct}
-                    productToEdit={productToEdit}
-                />
-
-                {loading && <p>Loading...</p>}
-                {error && <p>Error: {error}</p>}
-                {!loading && !error && products && (
-                    <ProductList 
-                        products={products}
-                        onEdit={selectEditProduct}
-                        onDelete={handleDeleteProduct}
-                    />
-                )}
-            </main>
-        </div>
+        {loading && <p>Loading...</p>}
+        {error && <p>Error: {error}</p>}
+        {!loading && !error && products && (
+            <ProductList 
+                products={products}
+                onEdit={selectEditProduct}
+                onDelete={handleDeleteProduct}
+            />
+        )}
     </div>
   )
 }

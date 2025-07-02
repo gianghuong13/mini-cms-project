@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 import ProductList from '../components/ProductList'
-import ProductForm from '../components/ProductForm'
 
 const ProductPage = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-
-    const [productToEdit, setProductToEdit] = useState(null);
 
     useEffect(() => {
         axios.get("http://localhost:1337/api/products")
@@ -22,21 +20,6 @@ const ProductPage = () => {
         });
     }, []);
 
-    const handleAddProduct = (newProduct) => {
-        setProducts([...products, newProduct]);
-    }
-
-    const selectEditProduct = (productId) => {
-        const product = products.find(p => p.id === productId)
-        setProductToEdit(product);
-    }
-
-    const handleEditProduct = (editedProduct) => {
-        const updatedList = products.map(p => p.id === editedProduct.id ? editedProduct : p);
-        setProducts(updatedList);
-        setProductToEdit(null);
-    }
-
     const handleDeleteProduct = async (productId) => {
         try {
             const res = await axios.delete(`http://localhost:1337/api/products/${productId}`);
@@ -49,21 +32,23 @@ const ProductPage = () => {
 
   return (
     <div>
-        <ProductForm 
-            onAdd={handleAddProduct}
-            onEdit={handleEditProduct}
-            productToEdit={productToEdit}
-        />
-
-        {loading && <p>Loading...</p>}
-        {error && <p>Error: {error}</p>}
-        {!loading && !error && products && (
-            <ProductList 
-                products={products}
-                onEdit={selectEditProduct}
-                onDelete={handleDeleteProduct}
-            />
-        )}
+        <div className='flex'>
+            <Link to={`/products/add`}>
+                <button className='bg-green-500 px-2 py-1 mx-2 rounded-md text-white'>
+                    Add product
+                </button>
+            </Link>
+        </div>
+        <div>
+            {loading && <p>Loading...</p>}
+            {error && <p>Error: {error}</p>}
+            {!loading && !error && products && (
+                <ProductList 
+                    products={products}
+                    onDelete={handleDeleteProduct}
+                />
+            )}
+            </div>
     </div>
   )
 }

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
-import axios from 'axios'
 
-const ProductForm = ({ onAdd, onEdit, productToEdit }) => {
+const ProductForm = ({ productToEdit = null, onSubmit }) => {
     const [productId, setProductId] = useState('');
     const [productName, setProductName] = useState('');
     const [productPrice, setProductPrice] = useState('');
@@ -11,6 +10,10 @@ const ProductForm = ({ onAdd, onEdit, productToEdit }) => {
             setProductId(productToEdit.id);
             setProductName(productToEdit.name);
             setProductPrice(productToEdit.price);
+        } else {
+            setProductId('');
+            setProductName('');
+            setProductPrice('');
         }
     }, [productToEdit])
 
@@ -19,24 +22,9 @@ const ProductForm = ({ onAdd, onEdit, productToEdit }) => {
         
         if (!productId || !productName || !productPrice) return;
 
-        const newProduct = {  id:productId, name:productName, price: parseInt(productPrice) };
+        const product = {  id:productId, name:productName, price: parseInt(productPrice) };
 
-        try {
-            if (productToEdit !== null) {
-                const res = await axios.put(`http://localhost:1337/api/products/${productToEdit.id}`, newProduct);
-                onEdit(res.data.product);
-            } else {
-                const res = await axios.post("http://localhost:1337/api/products", newProduct);
-                onAdd(res.data.product);
-            }
-
-            setProductId('');
-            setProductName('');
-            setProductPrice('');
-
-        } catch (err) {
-            console.error("Fail to submit form", err.message);
-        }
+        onSubmit(product);
 
     };
 

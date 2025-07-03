@@ -6,10 +6,15 @@ import AboutPage from './pages/AboutPage';
 import DashboardPage from './pages/DashboardPage';
 import AddProductPage from './pages/AddProductPage';
 import EditProductPage from './pages/EditProductPage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 
 function App() {
   return (
     <Routes>
+      <Route path='/login' element={<LoginPage />}/>
+      <Route path='/register' element={<RegisterPage />} />
+      
       <Route path='/' element={<MainLayout />}>
         <Route index element={<DashboardPage />} />
         <Route path='/dashboard' element={<DashboardPage />} />

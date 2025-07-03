@@ -11,6 +11,9 @@
 module.exports.routes = {
     'GET /api/ping': 'PingController.ping',
 
+    'POST /api/auth/register': 'AuthController.register',
+    'POST /api/auth/login': 'AuthController.login',
+
     'GET /api/products': 'ProductController.find',
     'GET /api/products/:id': 'ProductController.findOne',
     'POST /api/products': 'ProductController.create',

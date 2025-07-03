@@ -2,15 +2,29 @@ import { useState, useEffect } from "react"
 import Header from "./Header"
 import Sidebar from "./Sidebar"
 import { Outlet } from "react-router-dom"
+import Footer from "./Footer"
 
 const MainLayout = () => {
   const [theme, setTheme] = useState("light");
+  const [visitTime, setVisitTime] = useState('');
 
   useEffect (() => {
     const savedTheme = localStorage.getItem("theme");
     const initialTheme = savedTheme || "light";
     setTheme(initialTheme);
     document.documentElement.className = initialTheme;
+  }, []);
+
+  localStorage.setItem('lastVisit', new Date().toISOString());
+    
+  useEffect(() => {
+    const lastVisit = localStorage.getItem('lastVisit');
+
+    if (lastVisit) {
+      setVisitTime(new Date(lastVisit).toLocaleString());
+    } else {
+      setVisitTime("This is your first time");
+    }
   }, []);
 
   const toggleTheme = () => {
@@ -31,6 +45,10 @@ const MainLayout = () => {
                 <Outlet />
             </main>
         </div>
+
+        <Footer>
+          {visitTime}
+        </Footer>
     </div>
   )
 }

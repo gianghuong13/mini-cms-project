@@ -1,20 +1,51 @@
-const Header = ({ onToggleItem, theme }) => {
-  return (
-    <header className='bg-gray-200 shadow px-6 py-5 flex justify-between items-center'>
-        <h1 className='text-2xl font-semibold'>Welcome to CMS</h1>
-        <div className="flex">
-          <div>Tài khoản</div>
-          <div>
-            <button
-              onClick={onToggleItem}
-              className="bg-blue-500 text-white px-3 py-1 mx-5 rounded"
-            >
-              {theme === "light" ? "Dark Mode" : "Light Mode"}
-            </button>
-          </div>
-        </div>
-    </header>
-  )
-}
+import { useState } from "react";
+import { Sun, Moon } from "lucide-react"
 
-export default Header
+const Header = ({ onToggleItem, theme }) => {
+  const [showMenu, setShowMenu] = useState(false);
+
+  return (
+    <header className="bg-white shadow px-6 py-4 flex justify-between items-center">
+      <div className="text-green-600 font-bold text-xl">MyCMS</div>
+
+      <div className="flex items-center space-x-4">
+        <button
+          onClick={onToggleItem}
+          className="bg-gray-100 text-gray-500  rounded-full p-2 hover:bg-green-200 transition"
+        >
+          {theme === "light" ? <Moon /> : <Sun />}
+        </button>
+
+        <div className="relative">
+          <button
+            onClick={() => setShowMenu(!showMenu)}
+            className="flex items-center space-x-2 focus:outline-none"
+          >
+            <img
+              src="https://ui-avatars.com/api/?name=User"
+              alt="Avatar"
+              className="w-8 h-8 rounded-full"
+            />
+            <span className="text-gray-700">Account</span>
+          </button>
+
+          {showMenu && (
+            <div className="absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-10">
+              <a href="/profile" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">Profile</a>
+              <a href="/settings" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">Settings</a>
+              <hr />
+              <button
+                onClick={() => alert("Logging out...")}
+                className="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
+              >
+                Log out
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </header>
+  );
+};
+
+export default Header;

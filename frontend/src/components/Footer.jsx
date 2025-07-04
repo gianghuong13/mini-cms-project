@@ -1,9 +1,9 @@
 const Footer = ({ children }) => {
   return (
-    <div className="bg-black py-5 text-white flex justify-center">
-        {children}
-    </div>
-  )
-}
+    <footer className="bg-gray-100 py-5 text-center text-sm text-gray-600 shadow-inner">
+      {children}
+    </footer>
+  );
+};
 
-export default Footer
+export default Footer;

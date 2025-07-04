@@ -1,13 +1,34 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
+import { LayoutDashboard, Package, Info } from 'lucide-react'
 
 const Sidebar = () => {
+  const location = useLocation()
+
+  const linkClasses = (path) =>
+    `flex items-center space-x-2 p-2 rounded-xl transition ${
+      location.pathname === path
+        ? 'bg-green-700 font-semibold'
+        : 'hover:bg-green-400'
+    }`
+
   return (
-    <aside className='bg-emerald-500 text-white w-64 p-4 overflow-y-auto rounded-md'>
-        <nav className='space-y-2'>
-            <Link to={`/dashboard`} className='block p-2 rounded-2xl hover:bg-green-400'>Dashboard</Link>
-            <Link to={`/products`} className='block p-2 rounded-2xl hover:bg-green-400'>Products</Link>
-            <Link to={`/about`} className='block p-2 rounded-2xl hover:bg-green-400'>About</Link>
-        </nav>
+    <aside className='bg-green-600 text-white w-64 min-h-screen p-5 shadow-md rounded-r-2xl'>
+      <nav className='space-y-4'>
+        <Link to="/dashboard" className={linkClasses('/dashboard')}>
+          <LayoutDashboard className='w-5 h-5' />
+          <span>Dashboard</span>
+        </Link>
+
+        <Link to="/products" className={linkClasses('/products')}>
+          <Package className='w-5 h-5' />
+          <span>Products</span>
+        </Link>
+
+        <Link to="/about" className={linkClasses('/about')}>
+          <Info className='w-5 h-5' />
+          <span>About</span>
+        </Link>
+      </nav>
     </aside>
   )
 }

@@ -9,8 +9,33 @@
 
 module.exports = {
     find: async function (req, res) {
-        const products = await Product.find();
-        return res.json(products);
+        try {
+            const page = parseInt(req.query.page) || 1;
+            const limit = parseInt(req.query.limit) || 5;
+            const skip = (page - 1) * limit;
+            const search = req.query.search || '';
+
+            const whereClause = search ? { name: { contains: search.toLowerCase() } } : {};
+
+            const products = await Product.find({
+                where: whereClause,
+                skip,
+                limit,
+                sort: 'createdAt DESC'
+            });
+
+            const total = await Product.count({ where: whereClause });
+
+            return res.json({
+                products, 
+                total
+            });
+
+
+        } catch (err) {
+            return res.serverError(err.message);
+        }
+        
     },
 
     findOne: async function (req, res) {

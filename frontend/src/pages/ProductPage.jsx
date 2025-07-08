@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { Link, UNSAFE_getTurboStreamSingleFetchDataStrategy, useNavigate, useSearchParams } from 'react-router-dom'
 import ProductList from '../components/ProductList'
 import Button from '../components/Button'
 import ModalConfirm from '../components/ModalConfirm'
@@ -16,19 +16,53 @@ const ProductPage = () => {
     const [searchText, setSearchText] = useState("");
 
     const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     const itemsPerPage = 5;
 
-    useEffect(() => {
-        axios.get("http://localhost:1337/api/products")
+    const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
+
+    const fetchProducts  = () => {
+        const search = searchParams.get("search") || "";
+        const page = parseInt(searchParams.get("page")) || 1;
+        
+        setSearchText(search);
+        setCurrentPage(page);
+
+        setLoading(true);
+        axios.get("http://localhost:1337/api/products", {
+            params: {search, page, limit: itemsPerPage}
+        })
         .then(response => {
-            setProducts(response.data);
+            setProducts(response.data.products);
+            const totalItems = response.data.total;
+            setTotalPages(Math.ceil(totalItems / itemsPerPage));
             setLoading(false);
         })
         .catch(error => {
             setError(error.message);
             setLoading(false);
         });
-    }, []);
+    };
+
+    useEffect(() => {
+       fetchProducts();
+    }, [searchParams]);
+
+    const handleSearchSubmit = (e) => {
+        if (e.key === "Enter") {
+            const params = new URLSearchParams();
+            if (searchText.trim() !== '') params.set('search', searchText);
+            navigate(`/products?${params.toString()}`);
+        }
+    };
+
+    const goToPage = (page) => {
+        const params = new URLSearchParams(searchParams.toString());
+        if (searchText.trim() !== "") params.set('search', searchText);
+        params.set('page', page);
+        navigate(`/products?${params.toString()}`);
+    };
 
     const handleDeleteRequest = (productId) => {
         setDeletedProductId(productId);
@@ -36,27 +70,19 @@ const ProductPage = () => {
 
     const confirmDeleteRequest = async () => {
         try {
-            const res = await axios.delete(`http://localhost:1337/api/products/${deletedProductId}`);
-            const newList = products.filter(p => p.id !== deletedProductId);
-            setProducts(newList);
+            await axios.delete(`http://localhost:1337/api/products/${deletedProductId}`);
+            
+            const search = searchParams.get("search") || "";
+            const page = parseInt(searchParams.get("page")) || 1;
+
+            fetchProducts();
+
             setDeletedProductId(null);
         } catch (err) {
             console.error("Fail to delete product", err.message);
         }
     }
 
-    const filteredProducts = useMemo(() => {
-        return products.filter(product => 
-            product.name.toLowerCase().includes(searchText.toLowerCase())
-        );
-    }, [products, searchText]);
-
-    const paginatedProducts = useMemo(() => {
-        const start = (currentPage - 1) * itemsPerPage;
-        return filteredProducts.slice(start, start + itemsPerPage);
-    }, [filteredProducts, currentPage]);
-
-    const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
     return (
         <div>
@@ -65,8 +91,8 @@ const ProductPage = () => {
                     value={searchText}
                     onChange={(e) => {
                         setSearchText(e.target.value);
-                        setCurrentPage(1);
                     }}
+                    onKeyDown={handleSearchSubmit}
                     placeholder="Search products..."
                 />
                 <div className='flex'>
@@ -82,7 +108,7 @@ const ProductPage = () => {
                 {error && <p>Error: {error}</p>}
                 {!loading && !error && products && (
                     <ProductList 
-                        products={paginatedProducts}
+                        products={products}
                         onDelete={handleDeleteRequest}
                     />
                 )}
@@ -92,7 +118,7 @@ const ProductPage = () => {
                 {Array.from({ length: totalPages }, (_, i) => (
                     <button
                         key={i}
-                        onClick={() => setCurrentPage(i + 1)}
+                        onClick={() => goToPage(i + 1)}
                         className={`px-2 py-1 border rounded ${currentPage === i + 1 ? "bg-green-500 text-white" : ""}`}
                         >
                         {i + 1}

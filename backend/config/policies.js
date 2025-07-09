@@ -17,10 +17,15 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-  '*': true,
+  '*': false,
+
+  AuthController: {
+    login: true,
+    register: true
+  },
 
   ProductController: {
-    '*': 'isAuthenticated'
-  }
+    '*': ['isAuthenticated', 'hasPermission']
+  },
 
 };

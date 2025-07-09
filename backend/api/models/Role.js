@@ -1,24 +1,26 @@
 /**
- * Product.js
+ * Role.js
  *
  * @description :: A model definition represents a database table/collection.
  * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
  */
 
 module.exports = {
-  
-  primaryKey: 'id',
-
-  dontUseObjectIds: true,
 
   attributes: {
-    id: {
+    name: {
       type: 'string',
-      columnName: '_id'
-    },
-    name: { type: 'string', required: true },
-    price: { type: 'number', required: true },
+      required: true,
+      unique: true
+    }, 
+    permissions: {
+      collection: 'permission',
+      via: 'roles'
+    }, 
+    users: {
+      collection: 'user',
+      via: 'roles'
+    }
   },
-
 };
 

@@ -1,37 +1,36 @@
 /**
- * User.js
+ * Permission.js
  *
  * @description :: A model definition represents a database table/collection.
  * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
  */
 
 module.exports = {
-
-  attributes: {
-    email: {
+  
+  attributes: { 
+    action: {
       type: 'string',
       required: true,
-      unique: true,
-      isEmail: true
+      isIn: ['create', 'read', 'update', 'delete', 'manage']
     },
-    password: {
+    resource: {
       type: 'string',
       required: true,
-      // protect: true
-    },
-    name: {
-      type: 'string',
-      allowNull: true
     },
     roles: {
       collection: 'role',
-      via: 'users'
+      via: 'permissions'
     }
   },
 
-  // customToJSON: function () {
-  //   return _.omit(this, ['password']);
-  // }
+  customToJSON: function () {
+    return ({
+      id: this.id,
+      permission: `${this.resource}:${this.action}`
+    });
+  }
 
 };
+
+
 

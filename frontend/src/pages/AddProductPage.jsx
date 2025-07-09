@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api/api";
 import ProductForm from "../components/ProductForm"
 
 const AddProductPage = () => {
@@ -7,7 +7,7 @@ const AddProductPage = () => {
     
     const handleAddProduct = async (product) => {
         try {
-            await axios.post('http://localhost:1337/api/products', product);
+            await api.post('/products', product);
             navigate('/products');
         } catch (err) {
             console.error("Fail to add product:", err.message);

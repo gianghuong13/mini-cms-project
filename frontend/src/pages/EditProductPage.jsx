@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api/api";
 import ProductForm from "../components/ProductForm";
 
 const EditProductPage = () => {
@@ -11,14 +11,14 @@ const EditProductPage = () => {
     const [product, setProduct] = useState(null);
 
     useEffect(() => {
-        axios.get(`http://localhost:1337/api/products/${id}`)
+        api.get(`/products/${id}`)
             .then(res => setProduct(res.data))
             .catch(err => console.error("Fail to fetch product:", err.message));
     }, [id]);
 
     const handleEditProduct = async (product) => {
         try {
-            await axios.put(`http://localhost:1337/api/products/${id}`, product);
+            await api.put(`/products/${id}`, product);
             navigate("/products");
         } catch (err) {
             console.error("Fail to update product:", err.message);

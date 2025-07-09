@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
-import axios from 'axios'
-import { Link, UNSAFE_getTurboStreamSingleFetchDataStrategy, useNavigate, useSearchParams } from 'react-router-dom'
+import api from '../api/api'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import ProductList from '../components/ProductList'
 import Button from '../components/Button'
 import ModalConfirm from '../components/ModalConfirm'
@@ -30,7 +30,7 @@ const ProductPage = () => {
         setCurrentPage(page);
 
         setLoading(true);
-        axios.get("http://localhost:1337/api/products", {
+        api.get("/products", {
             params: {search, page, limit: itemsPerPage}
         })
         .then(response => {
@@ -70,10 +70,7 @@ const ProductPage = () => {
 
     const confirmDeleteRequest = async () => {
         try {
-            await axios.delete(`http://localhost:1337/api/products/${deletedProductId}`);
-            
-            const search = searchParams.get("search") || "";
-            const page = parseInt(searchParams.get("page")) || 1;
+            await api.delete(`/products/${deletedProductId}`);
 
             fetchProducts();
 

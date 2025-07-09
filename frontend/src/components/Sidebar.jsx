@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
-import { LayoutDashboard, Package, Info } from 'lucide-react'
+import { LayoutDashboard, Package, Info, User } from 'lucide-react'
+import { useHasRole } from '../hooks/useRole'
 
 const Sidebar = () => {
   const location = useLocation()
@@ -11,6 +12,10 @@ const Sidebar = () => {
         : 'hover:bg-green-400'
     }`
 
+  const isAmin = useHasRole('admin');
+  const isEditor = useHasRole('editor');
+  const isViewer = useHasRole('viewer'); 
+
   return (
     <aside className='bg-green-600 text-white w-64 min-h-screen p-5 shadow-md rounded-r-2xl'>
       <nav className='space-y-4'>
@@ -18,6 +23,13 @@ const Sidebar = () => {
           <LayoutDashboard className='w-5 h-5' />
           <span>Dashboard</span>
         </Link>
+
+        {isAmin && (
+          <Link to="/users" className={linkClasses('/dashboard')}>
+            <User className='w-5 h-5'/>
+            <span>Users</span>
+          </Link>
+        )}
 
         <Link to="/products" className={linkClasses('/products')}>
           <Package className='w-5 h-5' />

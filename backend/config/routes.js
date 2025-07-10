@@ -13,6 +13,12 @@ module.exports.routes = {
 
     'POST /api/auth/register': 'AuthController.register',
     'POST /api/auth/login': 'AuthController.login',
+    'GET /api/auth/profile': 'AuthController.profile',
+
+    'GET /api/users': 'UserController.find',
+    'PUT /api/users/assign-role': 'UserController.assignRole',
+
+    'GET /api/roles': 'RoleController.find',
 
     'GET /api/products': 'ProductController.find',
     'GET /api/products/:id': 'ProductController.findOne',

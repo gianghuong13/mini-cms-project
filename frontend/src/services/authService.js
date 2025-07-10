@@ -9,10 +9,5 @@ export const register = async (email, password) => {
 
 export const login = async (email, password) => {
     const res = await axios.post(`${API_URL}/login`, { email, password });
-    const { token, user } = res.data;
-
-    localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(user));
-    localStorage.setItem('roles', JSON.stringify(user.roles));
-    return { token, user };
+    return res.data;
 };

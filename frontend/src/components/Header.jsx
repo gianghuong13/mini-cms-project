@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
 import { Sun, Moon } from "lucide-react"
 
 const Header = ({ onToggleItem, theme }) => {
   const [showMenu, setShowMenu] = useState(false);
+  const { user, logout } = useAuth();
 
   return (
     <header className="bg-white shadow px-6 py-4 flex justify-between items-center">
@@ -15,7 +17,7 @@ const Header = ({ onToggleItem, theme }) => {
         >
           {theme === "light" ? <Moon /> : <Sun />}
         </button>
-
+        {user ? (
         <div className="relative">
           <button
             onClick={() => setShowMenu(!showMenu)}
@@ -35,7 +37,7 @@ const Header = ({ onToggleItem, theme }) => {
               <a href="/settings" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">Settings</a>
               <hr />
               <button
-                onClick={() => alert("Logging out...")}
+                onClick={logout}
                 className="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
               >
                 Log out
@@ -43,6 +45,9 @@ const Header = ({ onToggleItem, theme }) => {
             </div>
           )}
         </div>
+        ) : (
+          <p>Login</p>
+        )}
       </div>
     </header>
   );

@@ -50,7 +50,24 @@ module.exports = {
         } catch (err) {
             return res.status(500).json({ message: "Fail to login", details: err.message });
         }
+    }, 
+
+    profile: async function (req, res) {
+    try {
+        const user = await User.findOne({ id: req.user.id }).populate('roles');
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        return res.json({
+        user: {
+            id: user.id,
+            email: user.email,
+            roles: user.roles.map(r => r.name),
+        },
+    });
+    } catch (err) {
+        return res.status(500).json({ message: "Fail to load profile", details: err.message });
     }
+}
 
 };
 

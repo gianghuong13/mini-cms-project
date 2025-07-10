@@ -8,6 +8,8 @@
  * https://sailsjs.com/docs/concepts/policies
  */
 
+const RoleController = require("../api/controllers/RoleController");
+
 module.exports.policies = {
 
   /***************************************************************************
@@ -21,7 +23,16 @@ module.exports.policies = {
 
   AuthController: {
     login: true,
-    register: true
+    register: true, 
+    profile: ['isAuthenticated']
+  },
+
+  UserController: {
+    '*': ['isAuthenticated', 'hasPermission']
+  },
+
+  RoleController: {
+    '*': ['isAuthenticated', 'hasPermission']
   },
 
   ProductController: {

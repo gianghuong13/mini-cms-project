@@ -1,12 +1,19 @@
 import { useState, useEffect, useMemo } from 'react'
 import api from '../api/api'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
 import ProductList from '../components/ProductList'
 import Button from '../components/Button'
 import ModalConfirm from '../components/ModalConfirm'
 import Input from '../components/Input'
 
 const ProductPage = () => {
+    const { user } = useAuth();
+    const canAdd = () => {
+        if (!user || !user.roles) return false;
+        return user.roles.includes('admin') || user.roles.includes('editor');
+    };
+
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -92,13 +99,16 @@ const ProductPage = () => {
                     onKeyDown={handleSearchSubmit}
                     placeholder="Search products..."
                 />
-                <div className='flex'>
-                    <Link to={`/products/add`}>
-                        <Button className='bg-green-500'>
-                            Add product
-                        </Button>
-                    </Link>
-                </div>
+                
+                {canAdd() && (
+                    <div className='flex'>
+                        <Link to={`/products/add`}>
+                            <Button className='bg-green-500'>
+                                Add product
+                            </Button>
+                        </Link>
+                    </div>
+                )}
             </div>
             <div>
                 {loading && <p>Loading...</p>}

@@ -12,7 +12,7 @@ const Sidebar = () => {
         : 'hover:bg-green-400'
     }`
 
-  const isAmin = useHasRole('admin');
+  const isAdmin = useHasRole('admin');
   const isEditor = useHasRole('editor');
   const isViewer = useHasRole('viewer'); 
 
@@ -24,8 +24,8 @@ const Sidebar = () => {
           <span>Dashboard</span>
         </Link>
 
-        {isAmin && (
-          <Link to="/users" className={linkClasses('/dashboard')}>
+        {isAdmin && (
+          <Link to="/users" className={linkClasses('/users')}>
             <User className='w-5 h-5'/>
             <span>Users</span>
           </Link>

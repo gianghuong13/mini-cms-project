@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { LayoutDashboard, Package, Info, User } from 'lucide-react'
+import { LayoutDashboard, Package, Info, User, BookOpen } from 'lucide-react'
 import { useHasRole } from '../hooks/useRole'
 
 const Sidebar = () => {
@@ -23,6 +23,13 @@ const Sidebar = () => {
           <LayoutDashboard className='w-5 h-5' />
           <span>Dashboard</span>
         </Link>
+
+        {isAdmin && (
+          <Link to="/managePages" className={linkClasses('/managePages')}>
+            <BookOpen className='w-5 h-5' />
+            <span>Manage Pages</span>
+          </Link>
+        )}
 
         {isAdmin && (
           <Link to="/users" className={linkClasses('/users')}>

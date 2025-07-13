@@ -15,6 +15,10 @@ module.exports.routes = {
     'POST /api/auth/login': 'AuthController.login',
     'GET /api/auth/profile': 'AuthController.profile',
 
+    'GET /api/page-configs': 'PageConfigController.find',
+    'GET /api/page-configs/:pageKey': 'PageConfigController.findOne',
+    'DELETE /api/page-configs/:pageKey': 'PageConfigController.destroy',
+
     'GET /api/users': 'UserController.find',
     'PUT /api/users/assign-role': 'UserController.assignRole',
 

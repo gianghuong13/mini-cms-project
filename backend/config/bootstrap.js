@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 
-module.exports.bootstrap = async function () {
+module.exports.bootstrap = async function (done) {
   // 1. Tạo role và permission nếu chưa có
   const roleCount = await Role.count();
   if (roleCount === 0) {
@@ -73,4 +73,10 @@ module.exports.bootstrap = async function () {
       }
     }
   }
+
+  await require('../api/seed/pageConfig')();
+  await require('../api/seed/userPageConfig')();
+  await require('../api/seed/grantAdminPageConfig')();
+
+  return done();
 };

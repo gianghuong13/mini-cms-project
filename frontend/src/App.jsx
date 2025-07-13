@@ -10,6 +10,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import UserPage from './pages/UserPage';
 import PrivateRoute from './components/PrivateRoute';
+import PagesManagement from './pages/PagesManagement';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path='/products/edit/:id' element={<EditProductPage />} />
         <Route path='/about' element={<AboutPage />} />
         <Route path='/users' element={<UserPage />} />
+        <Route path='/managePages' element={<PagesManagement />} />
       </Route>
     </Routes>
 

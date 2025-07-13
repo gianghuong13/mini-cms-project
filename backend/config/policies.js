@@ -8,7 +8,6 @@
  * https://sailsjs.com/docs/concepts/policies
  */
 
-const RoleController = require("../api/controllers/RoleController");
 
 module.exports.policies = {
 
@@ -33,6 +32,10 @@ module.exports.policies = {
 
   RoleController: {
     '*': ['isAuthenticated', 'hasPermission']
+  },
+
+  PageConfigController: {
+    '*': ['isAuthenticated', 'hasPermission'],
   },
 
   ProductController: {

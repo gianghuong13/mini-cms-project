@@ -13,6 +13,7 @@ const DynamicForm = ({ config, initialData = {}, onSubmit, onCancel }) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		// console.log("Form submitted with data:", formData);
 		onSubmit(formData);
 		setFormData({});
 	}
@@ -22,13 +23,29 @@ const DynamicForm = ({ config, initialData = {}, onSubmit, onCancel }) => {
 			{config.fields.map((field, index) => (
 				<div key={index}>
 					<label className="block mb-1 font-medium">{field.label}</label>
-					<input 
-						type={field.type} 
-						required={field.required}
-						value={formData[field.name] || ''}
-						onChange={(e) => handleChange(e, field.name)}
-						className="border p-2 rounded w-full mb-4"
-					/>
+					{field.type === 'select' ? (
+						<select 
+							required={field.required}
+							value={formData[field.name] || ''} 
+							onChange={(e) => handleChange(e, field.name)} 
+							className="border p-2 rounded w-full mb-4"
+						>
+							<option value="">-- Select --</option>
+							{field.options.map((option, idx) => (
+								<option key={idx} value={option}>
+									{option}
+								</option>
+							))}
+						</select>
+					) : (
+						<input 
+							type={field.type} 
+							required={field.required}
+							value={formData[field.name] || ''}
+							onChange={(e) => handleChange(e, field.name)}
+							className="border p-2 rounded w-full mb-4"
+						/>
+					)}
 				</div>
 			))}
 			<div className="flex justify-end space-x-2">

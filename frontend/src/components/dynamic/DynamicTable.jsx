@@ -1,7 +1,7 @@
 
 
 const DynamicTable = ({ columns, data, onEdit, onDelete }) => {
-    console.log('DynamicTable rendered with columns:', columns, 'and data:', data);
+    // console.log('DynamicTable rendered with columns:', columns, 'and data:', data);
     if (!Array.isArray(columns) || columns.length === 0) {
         return <div>No columns defined</div>;
     }

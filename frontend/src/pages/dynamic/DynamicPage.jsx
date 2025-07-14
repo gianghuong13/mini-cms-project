@@ -19,7 +19,7 @@ const DynamicPage = () => {
         const fetchConfig = async () => {
             try {
                 const res = await api.get(`/page-configs/${pageKey}`);
-                console.log('Page config:', res.data);
+                // console.log('Page config:', res.data);
                 setConfig(res.data);
             } catch (error) {
                 console.error('Error fetching page config:', error);
@@ -31,7 +31,7 @@ const DynamicPage = () => {
     // Fetch data based on the config's API endpoint
     useEffect(() => {
         if (config?.api?.get) {
-            console.log('Loading data from:', config.api.get);
+            // console.log('Loading data from:', config.api.get);
             api.get(config.api.get)
             .then(res => {
                 const key = config.api.responseKey;
@@ -39,7 +39,7 @@ const DynamicPage = () => {
                 const records = key ? res.data[key] : Array.isArray(res.data) ? res.data : [];
                 const totalCount = totalKey ? res.data[totalKey] : records.length;
 
-                console.log('Fetched data:', records);
+                // console.log('Fetched data:', records);
 
                 setData(records);
                 setTotal(totalCount);
@@ -48,7 +48,7 @@ const DynamicPage = () => {
         }
     }, [config, reload]);
 
-    console.log('data:', data);
+    // console.log('data:', data);
 
     const handleEdit = (item) => {
         setEditItem(item);

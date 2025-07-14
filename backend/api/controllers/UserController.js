@@ -58,7 +58,7 @@ module.exports = {
     },
 
     create: async function (req, res) {
-        const { email, password, name } = req.body;
+        const { email, password, name, roles } = req.body;
 
         if (!email || !password) {
             return res.status(400).json({ error: "Email and password are required" });
@@ -68,7 +68,10 @@ module.exports = {
             const hashedPassword = await bcrypt.hash(password, 10);
             const user = await User.create({ email, password: hashedPassword, name: name }).fetch();
             const defaultRole = await Role.findOne({ name: 'viewer' });
-            if (defaultRole) {
+            const role = await Role.findOne({ name: roles });
+            if (role) {
+                await User.addToCollection(user.id, 'roles').members([role.id]);
+            } else if (defaultRole) {
                 await User.addToCollection(user.id, 'roles').members([defaultRole.id]);
             }
             return res.status(201).json({ message: "User created successfully", user });
@@ -78,13 +81,17 @@ module.exports = {
     },
 
     update: async function (req, res) {
-        const { email, name, password } = req.body;
+        const { email, name, password, roles } = req.body;
         const userId = req.params.id;
         if (!email || !userId) {
             return res.status(400).json({ error: "Email and userId are required" });
         }
         try {
-            const updateData = { email, name, password };
+            const role = await Role.findOne({ name: roles });
+            if (!role) {
+                return res.status(404).json({ error: "Role not found" });
+            }
+            const updateData = { email, name };
             if (password) {
                 updateData.password = await bcrypt.hash(password, 10);
             }
@@ -93,6 +100,10 @@ module.exports = {
             if (!updatedUser) {
                 return res.status(404).json({ error: "User not found" });
             }
+
+            
+            await User.replaceCollection(userId, 'roles').members([role.id]);
+            
             return res.json({
                 message: "User updated successfully",
                 user: updatedUser

@@ -12,19 +12,19 @@ module.exports = async function seedPageConfig() {
 
         form: {
             fields: [
-                { name: 'productName', type: 'text', label: 'Product Name', required: true },
-                { name: 'productPrice', type: 'number', label: 'Product Price', required: true },
+                { name: 'name', type: 'text', label: 'Product Name', required: true },
+                { name: 'price', type: 'number', label: 'Product Price', required: true },
             ]
         }, 
 
         grid: {
             columns: [
-                { title: 'Prouduct Name', dataIndex: 'productName'},
-                { title: 'Product Price', dataIndex: 'productPrice' },
+                { title: 'Prouduct Name', dataIndex: 'name'},
+                { title: 'Product Price', dataIndex: 'price' },
             ],
             filters: [
-                { name: 'productName', type: 'text' },
-                { name: 'productPrice', type: 'number' },
+                { name: 'name', type: 'text' },
+                { name: 'price', type: 'number' },
             ],
         },
 
@@ -35,10 +35,12 @@ module.exports = async function seedPageConfig() {
         ],
 
         api: {
-            get: '/api/products',
-            post: '/api/products',
-            put: '/api/products/:id',
-            delete: '/api/products/:id',
+            get: '/products',
+            responseKey: "products",
+            totalKey: "total",
+            post: '/products',
+            put: '/products/:id',
+            delete: '/products/:id',
         },
 
         layout: {

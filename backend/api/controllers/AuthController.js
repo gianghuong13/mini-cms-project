@@ -13,9 +13,13 @@ module.exports = {
         const { email, password } = req.body;
 
         const hashedPassword = await bcrypt.hash(password, 10);
-    
+        const name = email.split('@')[0];
+        if (!email || !password) {
+            return res.status(400).json({ error: "Email and password are required" });
+        }
+
         try {
-            const user = await User.create({ email, password: hashedPassword }).fetch();
+            const user = await User.create({ email, password: hashedPassword, name: name }).fetch();
             const defaultRole = await Role.findOne({ name: 'viewer' });
             if (defaultRole) {
                 await User.addToCollection(user.id, 'roles').members([defaultRole.id]);

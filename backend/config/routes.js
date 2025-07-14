@@ -20,6 +20,10 @@ module.exports.routes = {
     'DELETE /api/page-configs/:pageKey': 'PageConfigController.destroy',
 
     'GET /api/users': 'UserController.find',
+    'GET /api/users/:id': 'UserController.findOne',
+    'POST /api/users': 'UserController.create',
+    'PUT /api/users/:id': 'UserController.update',
+    'DELETE /api/users/:id': 'UserController.destroy',
     'PUT /api/users/assign-role': 'UserController.assignRole',
 
     'GET /api/roles': 'RoleController.find',

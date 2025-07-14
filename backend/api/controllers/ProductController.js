@@ -49,10 +49,10 @@ module.exports = {
     },
 
     create: async function (req, res) {
-        const { id, name, price } = req.body;
+        const { name, price } = req.body;
         
         try {
-            const newProduct = await Product.create({ id, name, price }).fetch();
+            const newProduct = await Product.create({ name, price }).fetch();
             return res.status(201).json({
                 message: "Create successfully",
                 product: newProduct

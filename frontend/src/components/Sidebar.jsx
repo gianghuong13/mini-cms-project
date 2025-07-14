@@ -32,13 +32,13 @@ const Sidebar = () => {
         )}
 
         {isAdmin && (
-          <Link to="/users" className={linkClasses('/users')}>
+          <Link to="/pages/userPage" className={linkClasses('/users')}>
             <User className='w-5 h-5'/>
             <span>Users</span>
           </Link>
         )}
 
-        <Link to="/products" className={linkClasses('/products')}>
+        <Link to="/pages/productPage" className={linkClasses('/products')}>
           <Package className='w-5 h-5' />
           <span>Products</span>
         </Link>

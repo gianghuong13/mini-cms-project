@@ -7,16 +7,16 @@
 
 module.exports = {
   
-  primaryKey: 'id',
+  // primaryKey: 'id',
 
-  dontUseObjectIds: true,
+  // dontUseObjectIds: true,
 
   attributes: {
-    id: {
-      type: 'string',
-      columnName: '_id'
-    },
-    name: { type: 'string', required: true },
+    // id: {
+    //   type: 'string',
+    //   columnName: '_id'
+    // },
+    name: { type: 'string', required: true, unique: true },
     price: { type: 'number', required: true },
   },
 

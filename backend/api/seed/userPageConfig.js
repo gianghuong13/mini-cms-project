@@ -12,21 +12,22 @@ module.exports = async function seedUserPageConfig() {
 
     form: {
       fields: [
-        { name: 'fullName', type: 'text', label: 'Full Name', required: true },
+        { name: 'name', type: 'text', label: 'Name', required: true },
         { name: 'email', type: 'email', label: 'Email', required: true },
-        { name: 'role', type: 'select', label: 'Role', options: ['admin', 'editor', 'viewer'], required: true },
+        { name: 'roles', type: 'select', label: 'Roles', options: ['admin', 'editor', 'viewer'], required: true },
+        { name: 'password', type: 'password', label: 'Password', required: true },
       ]
     },
 
     grid: {
       columns: [
-        { title: 'Full Name', dataIndex: 'fullName' },
+        { title: 'Name', dataIndex: 'name' },
         { title: 'Email', dataIndex: 'email' },
-        { title: 'Role', dataIndex: 'role' },
+        { title: 'Roles', dataIndex: 'roles' },
       ],
       filters: [
         { name: 'email', type: 'text' },
-        { name: 'role', type: 'select', options: ['admin', 'editor', 'viewer'] },
+        { name: 'roles', type: 'select', options: ['admin', 'editor', 'viewer'] },
       ]
     },
 
@@ -37,10 +38,12 @@ module.exports = async function seedUserPageConfig() {
     ],
 
     api: {
-      get: '/api/users',
-      post: '/api/users',
-      put: '/api/users/:id',
-      delete: '/api/users/:id',
+      get: '/users',
+      responseKey: "users",
+      totalKey: "total",
+      post: '/users',
+      put: '/users/:id',
+      delete: '/users/:id',
     },
 
     layout: {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import api from '../api/api'; 
-import { useAuth } from '../contexts/AuthContext';
+import api from '../../api/api'; 
+import { useAuth } from '../../contexts/AuthContext';
 import { Link } from 'react-router-dom';
 
 const PagesManagement = () => {
@@ -59,7 +59,7 @@ const PagesManagement = () => {
                             <td className="border p-2">{page.createdBy ? page.createdBy.name : 'Unknown'}</td>
                             {canManagePages && (
                                 <td>
-                                    <Link to={`/pages/${page.pageKey}/edit`} className="text-blue-500 hover:underline">
+                                    <Link to={`/pages/edit/${page.pageKey}`} className="text-blue-500 hover:underline">
                                         <button className="bg-blue-600 hover:underline text-white px-3 py-1 rounded">Edit</button>
                                     </Link>
                                     

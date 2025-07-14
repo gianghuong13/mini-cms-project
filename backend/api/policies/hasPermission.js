@@ -26,12 +26,12 @@ module.exports = async function (req, res, proceed) {
         }
     }
 
-    console.log("action", action);
-    console.log("resource/controller/model", resource);
+    // console.log("action", action);
+    // console.log("resource/controller/model", resource);
 
     action = ACTION_ALIASES[action] || action;
 
-    console.log("Checking permission for:", `${resource}/${action}`);
+    // console.log("Checking permission for:", `${resource}/${action}`);
 
     const fullUser = await User.findOne({ id: user.id }).populate('roles');
     const fullRoles = await Promise.all(
@@ -40,7 +40,7 @@ module.exports = async function (req, res, proceed) {
 
     const permissions = fullRoles.flatMap(r => r.permissions);
 
-    console.log("User permissions:", permissions.map(p => `${p.resource}/${p.action}`));
+    // console.log("User permissions:", permissions.map(p => `${p.resource}/${p.action}`));
 
     const hasPermission = permissions.some(p => 
         p.resource === resource && 

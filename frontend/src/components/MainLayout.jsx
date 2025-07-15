@@ -39,9 +39,9 @@ const MainLayout = () => {
     <div className='flex flex-col min-h-screen dark:bg-gray-900'>
         <Header onToggleItem={toggleTheme} theme={theme}/>
 
-        <div className='flex flex-1 overflow-hidden'>
+        <div className='flex flex-1 overflow-hidden pt-16'>
             <Sidebar />
-            <main className='flex-1 flex-col p-6 overflow-y-auto bg-white dark:bg-gray-900 dark:text-white'>
+            <main className='flex-1 flex-col ml-60 px-6 py-3 overflow-y-auto bg-white dark:bg-gray-900 dark:text-white'>
                 <Outlet />
             </main>
         </div>

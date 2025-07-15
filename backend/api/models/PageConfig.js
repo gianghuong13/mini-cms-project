@@ -42,11 +42,6 @@ module.exports = {
       description: 'Config API endpoints for the page',
     },
 
-    layout: {
-      type: 'json',
-      description: 'Config dynamic layout for the page',
-    },
-
     isActive: {
       type: 'boolean',
       defaultsTo: true,

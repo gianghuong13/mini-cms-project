@@ -1,13 +1,20 @@
+import { useState } from 'react';
+import { DebounceInput } from 'react-debounce-input';
 
-
-const DynamicTable = ({ columns, data, onEdit, onDelete }) => {
+const DynamicTable = ({ columns, data, onFilterChange, onEdit, onDelete }) => {
     // console.log('DynamicTable rendered with columns:', columns, 'and data:', data);
     if (!Array.isArray(columns) || columns.length === 0) {
         return <div>No columns defined</div>;
     }
 
-    if (!Array.isArray(data) || data.length === 0) {
-        return <div className="text-gray-500 italic">No data available</div>;
+    const [localFilters, setLocalFilters] = useState({});
+
+    const handleInputChange = (key, value) => {
+        const updated = { ...localFilters, [key]: value };
+        setLocalFilters(updated);
+        if (onFilterChange) {
+            onFilterChange(updated);
+        }
     }
 
     return (
@@ -20,10 +27,29 @@ const DynamicTable = ({ columns, data, onEdit, onDelete }) => {
 
                     {(onEdit || onDelete) && (<th className="border p-2 text-left">Actions</th>)}
                 </tr>
+
+                <tr>
+                    {columns.map(column => (
+                        <th key={column.dataIndex} className="border p-2">
+                            {column.allowFiltering ? (
+                                <DebounceInput
+                                    minLength={2}
+                                    debounceTimeout={500}
+                                    type={column.filterType || 'text'}
+                                    value={localFilters[column.dataIndex] || ''}
+                                    placeholder={`Filter ${column.title}`}
+                                    className="border p-1 w-full rounded"
+                                    onChange={(e) => handleInputChange(column.dataIndex, e.target.value)}
+                                />
+                            ) : null}
+                        </th>
+                    ))}
+                </tr>
             </thead>
 
             <tbody>
-                    {data.map((item, rowIndex) => (
+                {Array.isArray(data) && data.length > 0 ? (
+                    data.map((item, rowIndex) => (
                         <tr key={rowIndex} className="hover:bg-gray-50">
                             {columns.map((col, colIndex) => (
                                 <td key={colIndex} className="border p-2">{item[col.dataIndex]}</td>
@@ -44,7 +70,14 @@ const DynamicTable = ({ columns, data, onEdit, onDelete }) => {
                                 </td>
                             )}
                         </tr>
-                    ))}
+                    ))
+                ) : (
+                    <tr>
+                        <td colSpan={columns.length + (onEdit || onDelete ? 1 : 0)} className="text-center p-4">
+                            No data available
+                        </td>
+                    </tr>
+                )}
             </tbody>
         </table>
     )

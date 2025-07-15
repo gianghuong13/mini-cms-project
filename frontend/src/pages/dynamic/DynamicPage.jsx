@@ -11,6 +11,9 @@ const DynamicPage = () => {
     const [total, setTotal] = useState(0);
     const [reload, setReload] = useState(0);
     const [editItem, setEditItem] = useState(null);
+    const [filters, setFilters] = useState({});
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(10);
 
     const [showForm, setShowForm] = useState(false);
 
@@ -32,7 +35,7 @@ const DynamicPage = () => {
     useEffect(() => {
         if (config?.api?.get) {
             // console.log('Loading data from:', config.api.get);
-            api.get(config.api.get)
+            api.get(config.api.get, { params: {...filters, page, limit} })
             .then(res => {
                 const key = config.api.responseKey;
                 const totalKey = config.api.totalKey;
@@ -46,7 +49,7 @@ const DynamicPage = () => {
             })
             .catch(err => console.error('Load data failed: ', err));
         }
-    }, [config, reload]);
+    }, [config, filters, page, limit, reload]);
 
     // console.log('data:', data);
 
@@ -90,6 +93,12 @@ const DynamicPage = () => {
             } 
         }
     };
+
+    const handleFilterChange = (newFilters) => {
+        setFilters(newFilters);
+        setPage(1);
+        setReload(r => r + 1);
+    }
 
     if (!config) return <div>Loading config...</div>;
 
@@ -141,15 +150,35 @@ const DynamicPage = () => {
 
             {/* Table */}
             {config.grid && (
-                <DynamicTable 
-                    columns={config.grid.columns} 
-                    data={data} 
-                    onEdit={handleEdit} 
-                    onDelete={handleDelete}
-                />
+                <div>
+                    <p>({total} records)</p>
+                    <DynamicTable 
+                        columns={config.grid.columns} 
+                        data={data} 
+                        onEdit={handleEdit} 
+                        onDelete={handleDelete}
+                        onFilterChange={handleFilterChange}
+                    />
+                </div>
             )}
 
-            <p>Total: {total}</p>
+            <div className="mt-4 flex items-center gap-2">
+                <button
+                    disabled={page === 1}
+                    onClick={() => setPage(p => Math.max(1, p - 1))}
+                    className="bg-gray-300 px-3 py-1 rounded hover:bg-gray-400 disabled:opacity-50"
+                >
+                    Prev
+                </button>
+                <span>Page {page}</span>
+                <button
+                    disabled={page * limit >= total}
+                    onClick={() => setPage(p => p + 1)}
+                    className="bg-gray-300 px-3 py-1 rounded hover:bg-gray-400 disabled:opacity-50"
+                >
+                    Next
+                </button>
+            </div>
         </div>
   );
 };

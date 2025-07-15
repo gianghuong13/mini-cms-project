@@ -7,7 +7,7 @@ const Header = ({ onToggleItem, theme }) => {
   const { user, logout } = useAuth();
 
   return (
-    <header className="bg-white shadow px-6 py-4 flex justify-between items-center">
+    <header className="h-16 bg-white shadow px-6 py-4 flex justify-between items-center fixed top-0 left-0 right-0 z-50 dark:bg-gray-800 dark:text-white">
       <div className="text-green-600 font-bold text-xl">MyCMS</div>
 
       <div className="flex items-center space-x-4">

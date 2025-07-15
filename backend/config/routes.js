@@ -17,6 +17,8 @@ module.exports.routes = {
 
     'GET /api/page-configs': 'PageConfigController.find',
     'GET /api/page-configs/:pageKey': 'PageConfigController.findOne',
+    'POST /api/page-configs': 'PageConfigController.create',
+    'PUT /api/page-configs/:pageKey': 'PageConfigController.update',
     'DELETE /api/page-configs/:pageKey': 'PageConfigController.destroy',
 
     'GET /api/users': 'UserController.find',

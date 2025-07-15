@@ -19,13 +19,10 @@ module.exports = async function seedPageConfig() {
 
         grid: {
             columns: [
-                { title: 'Prouduct Name', dataIndex: 'name'},
-                { title: 'Product Price', dataIndex: 'price' },
-            ],
-            filters: [
-                { name: 'name', type: 'text' },
-                { name: 'price', type: 'number' },
-            ],
+                { title: 'Prouduct Name', dataIndex: 'name', allowFiltering: true, filterType: 'text' },
+                { title: 'Product Price', dataIndex: 'price', allowFiltering: false, filterType: 'number' },
+                { title: 'Created At', dataIndex: 'createdAt', allowFiltering: false },
+            ]
         },
 
         button: [
@@ -41,13 +38,6 @@ module.exports = async function seedPageConfig() {
             post: '/products',
             put: '/products/:id',
             delete: '/products/:id',
-        },
-
-        layout: {
-            header: 'Product Management',
-            footer: '© 2023 Mini CMS Project',
-            sidebar: true,
-            sections: ['form', 'grid', 'buttons'],
         },
 
         isActive: true,

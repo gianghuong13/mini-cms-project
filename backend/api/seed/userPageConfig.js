@@ -21,14 +21,10 @@ module.exports = async function seedUserPageConfig() {
 
     grid: {
       columns: [
-        { title: 'Name', dataIndex: 'name' },
-        { title: 'Email', dataIndex: 'email' },
-        { title: 'Roles', dataIndex: 'roles' },
+        { title: 'Name', dataIndex: 'name', allowFiltering: true, filterType: 'text' },
+        { title: 'Email', dataIndex: 'email', allowFiltering: true, filterType: 'text' },
+        { title: 'Roles', dataIndex: 'roles', allowFiltering: false, filterType: 'text' },
       ],
-      filters: [
-        { name: 'email', type: 'text' },
-        { name: 'roles', type: 'select', options: ['admin', 'editor', 'viewer'] },
-      ]
     },
 
     button: [
@@ -44,13 +40,6 @@ module.exports = async function seedUserPageConfig() {
       post: '/users',
       put: '/users/:id',
       delete: '/users/:id',
-    },
-
-    layout: {
-      header: 'User Management',
-      footer: '© 2023 Mini CMS Project',
-      sidebar: true,
-      sections: ['form', 'grid', 'buttons'],
     },
 
     isActive: true,

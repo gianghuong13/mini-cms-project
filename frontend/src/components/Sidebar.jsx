@@ -17,7 +17,7 @@ const Sidebar = () => {
   const isViewer = useHasRole('viewer'); 
 
   return (
-    <aside className='bg-green-600 text-white w-64 min-h-screen p-5 shadow-md rounded-r-2xl'>
+    <aside className='bg-green-600 text-white w-64 min-h-screen p-5 shadow-md fixed left-0 top-16 z-40'>
       <nav className='space-y-4'>
         <Link to="/dashboard" className={linkClasses('/dashboard')}>
           <LayoutDashboard className='w-5 h-5' />

@@ -13,9 +13,19 @@ module.exports = {
             const page = parseInt(req.query.page) || 1;
             const limit = parseInt(req.query.limit) || 5;
             const skip = (page - 1) * limit;
-            const search = req.query.search || '';
+            // const search = req.query.search || '';
 
-            const whereClause = search ? { name: { contains: search.toLowerCase() } } : {};
+            // const whereClause = search ? { name: { contains: search.toLowerCase() } } : {};
+
+            const filterableFields = ['name'];
+            const whereClause = {};
+
+            for (const field of filterableFields) {
+                if (req.query[field] !== undefined && req.query[field] !== '') {
+                    const value = req.query[field];
+                    whereClause[field] = { contains: value.toLowerCase() };
+                }
+            }
 
             const products = await Product.find({
                 where: whereClause,
@@ -30,12 +40,9 @@ module.exports = {
                 products, 
                 total
             });
-
-
         } catch (err) {
             return res.serverError(err.message);
         }
-        
     },
 
     findOne: async function (req, res) {

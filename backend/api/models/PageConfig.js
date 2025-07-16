@@ -37,7 +37,7 @@ module.exports = {
       description: 'Config dynamic buttons for the page',
     },
 
-    api: {
+    apiEndpoints: {
       type: 'json',
       description: 'Config API endpoints for the page',
     },

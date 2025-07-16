@@ -98,10 +98,10 @@ const ButtonConfigEditor = ({ buttonConfig = [], onChange }) => {
                 </div>
 
                 <div>
-                    <label className="block font-medium mb-1">API Endpoint</label>
+                    <label className="block font-medium mb-1">Call API</label>
                     <input
                         type="text"
-                        value={selectedButton.apiEndpoint}
+                        value={selectedButton.callApi}
                         onChange={(e) => handleFieldChange('apiEndpoint', e.target.value)}
                         className="border p-2 w-full rounded"
                         placeholder="API endpoint key from apiEndpoints config"

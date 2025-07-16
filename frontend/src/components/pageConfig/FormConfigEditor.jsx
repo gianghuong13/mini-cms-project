@@ -52,7 +52,7 @@ const FormConfigEditor = ({ formConfig, onChange }) => {
                             className={`flex justify-between items-center cursor-pointer p-2 rounded ${selectedIndex === index ? 'bg-blue-100 font-bold' : 'hover:bg-gray-100'}`}
                         >
                             <span>
-                                {field.name || 'New Field'}
+                                {field.name || `Field ${index + 1}`}
                             </span>
                         
                             <button>

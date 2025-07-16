@@ -12,9 +12,10 @@ import UserPage from './pages/UserPage';
 import PrivateRoute from './components/PrivateRoute';
 
 import PagesManagement from './pages/dynamic/PagesManagement';
+import CreatePageConfig from './pages/dynamic/CreatePageConfig';
 import EditPageConfig from './pages/dynamic/EditPageConfig';
 
-import DynamicPage from './pages/dynamic/DynamicPage';
+import DynamicPage from './components/dynamic/DynamicPage';
 
 function App() {
   return (
@@ -30,7 +31,9 @@ function App() {
         <Route path='/products/edit/:id' element={<EditProductPage />} />
         <Route path='/about' element={<AboutPage />} />
         <Route path='/users' element={<UserPage />} />
+        
         <Route path='/managePages' element={<PagesManagement />} />
+        <Route path='/pages/create' element={<CreatePageConfig />} />
         <Route path='/pages/edit/:pageKey' element={<EditPageConfig />} />
 
         <Route path='/pages/:pageKey' element={<DynamicPage />} />

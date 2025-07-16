@@ -31,7 +31,15 @@ const PagesManagement = () => {
     return (
         <div className='p-6'>
             <h1 className='text-2xl font-bold mb-4'>List of Pages to Config</h1>
-
+            {canManagePages && (
+                <div className='float-right'>
+                    <Link to="/pages/create" className="mb-4 inline-block">
+                        <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+                            + Create Page
+                        </button>
+                    </Link>
+                </div>
+            )}
             <table className="w-full border-collapse border border-gray-300">
                 <thead className="bg-gray-100">
                     <tr>

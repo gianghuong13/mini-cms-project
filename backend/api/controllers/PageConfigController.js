@@ -41,7 +41,7 @@ module.exports = {
             title, 
             form,
             grid,
-            api, 
+            apiEndpoints, 
             button, 
             isActive,
             description
@@ -62,7 +62,7 @@ module.exports = {
                 title,
                 form,
                 grid,
-                api,
+                apiEndpoints,
                 button,
                 isActive,
                 description,
@@ -82,7 +82,7 @@ module.exports = {
                 title, 
                 form,
                 grid,
-                api, 
+                apiEndpoints, 
                 button, 
                 isActive,
                 description
@@ -97,7 +97,7 @@ module.exports = {
                 title,
                 form,
                 grid,
-                api,
+                apiEndpoints,
                 button,
                 isActive,
                 description

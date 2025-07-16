@@ -47,7 +47,7 @@ const GridConfigEditor = ({ gridConfig, onChange }) => {
                     }`}
                 >
                 <span>
-                    {col.dataIndex || 'New Column'}
+                    {col.dataIndex || `Column ${index + 1}`}
                 </span>
                 <button>
                     <Trash

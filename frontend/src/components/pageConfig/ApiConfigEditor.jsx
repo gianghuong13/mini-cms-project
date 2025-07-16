@@ -112,6 +112,7 @@ const ApiConfigEditor = ({ apiConfig = {}, onChange }) => {
                             <input
                                 value={selectedConfig.type || ''}
                                 onChange={(e) => handleFieldChange('type', e.target.value)}
+                                placeholder='e.g find, findOne, create, updateOne, destroyOne'
                                 className="border p-2 w-full rounded"
                             />
                         </div>

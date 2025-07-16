@@ -1,8 +1,8 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import api from '../../api/api';
-import DynamicForm from '../../components/dynamic/DynamicForm';
-import DynamicTable from '../../components/dynamic/DynamicTable';
+import DynamicForm from './DynamicForm';
+import DynamicTable from './DynamicTable';
 
 const DynamicPage = () => {
     const { pageKey } = useParams();

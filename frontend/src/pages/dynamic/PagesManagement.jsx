@@ -60,7 +60,9 @@ const PagesManagement = () => {
                             {canManagePages && (
                                 <td>
                                     <Link to={`/pages/edit/${page.pageKey}`} className="text-blue-500 hover:underline">
-                                        <button className="bg-blue-600 hover:underline text-white px-3 py-1 rounded">Edit</button>
+                                        <button className="bg-blue-600 hover:underline text-white px-3 py-1 ml-3 rounded">
+                                            Edit
+                                        </button>
                                     </Link>
                                     
                                     <button 

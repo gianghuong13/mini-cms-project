@@ -17,7 +17,11 @@ const DynamicPage = () => {
 
     const [showForm, setShowForm] = useState(false);
 
-    // Fetch the page configuration based on the pageKey
+    const getApiByAction = (action) => config?.apiEndpoints?.[action];
+    const getButtonByAction = (action) => config?.button?.find(b => b.action === action);
+    const inTableButtons = config?.button?.filter(b => b.action !== 'create') || [];
+
+    // Fetch config
     useEffect(() => {
         const fetchConfig = async () => {
             try {
@@ -31,16 +35,15 @@ const DynamicPage = () => {
         fetchConfig();
     }, [pageKey]);
 
-    // Fetch data based on the config's API endpoint
+    // Fetch data
     useEffect(() => {
-        if (config?.api?.get) {
+        const listApi = getApiByAction('list');
+        if (listApi?.url) {
             // console.log('Loading data from:', config.api.get);
-            api.get(config.api.get, { params: {...filters, page, limit} })
+            api.get(listApi.url, { params: {...filters, page, limit} })
             .then(res => {
-                const key = config.api.responseKey;
-                const totalKey = config.api.totalKey;
-                const records = key ? res.data[key] : Array.isArray(res.data) ? res.data : [];
-                const totalCount = totalKey ? res.data[totalKey] : records.length;
+                const records = listApi.responseKey ? res.data[listApi.responseKey] : res.data;
+                const totalCount = listApi.totalKey ? res.data[listApi.totalKey] : records.length;
 
                 // console.log('Fetched data:', records);
 
@@ -71,11 +74,14 @@ const DynamicPage = () => {
     const handleSubmit = async (formData) => {
         // console.log('Submitting form data:', formData);
         try {
-            if (editItem?.id && config.api.put) {
-                await api.put(config.api.put.replace(':id', editItem.id), formData);
-            } else if (config.api.post) {
-                await api.post(config.api.post, formData);
+            if (editItem?.id && getApiByAction('update')) {
+                const url = getApiByAction('update').url.replace(':id', editItem.id);
+                await api.put(url, formData);
+            } else if (getApiByAction('create')) {
+                const url = getApiByAction('create').url;
+                await api.post(url, formData);
             }
+            setShowForm(false);
             setEditItem(null);
             setReload(r => r + 1);
         } catch (error) {
@@ -86,7 +92,8 @@ const DynamicPage = () => {
     const handleDelete = async (item) => {
         if (window.confirm('Are you sure you want to delete this item?')) {
             try {
-                await api.delete(config.api.delete.replace(':id', item.id));
+                const url = getApiByAction('delete').url.replace(':id', item.id);
+                await api.delete(url);
                 setReload(r => r + 1);
             } catch (error) {
                 console.error('Delete failed: ', error);
@@ -108,12 +115,12 @@ const DynamicPage = () => {
 
             {config.button && (
                 <div className="mb-4 float-end">
-                    {config.button.find(b => b.action === 'create') && (
+                    {getButtonByAction('create') && (
                         <button 
                             onClick={handleCreate}
                             className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600"
                         >
-                            + Create
+                            + {getButtonByAction('create').label}
                         </button>
                     )}
                 </div>
@@ -155,9 +162,12 @@ const DynamicPage = () => {
                     <DynamicTable 
                         columns={config.grid.columns} 
                         data={data} 
-                        onEdit={handleEdit} 
-                        onDelete={handleDelete}
                         onFilterChange={handleFilterChange}
+                        buttonConfig={inTableButtons}
+                        onAction={(action, item) => {
+                            if (action === 'update') return handleEdit(item);
+                            if (action === 'delete') return handleDelete(item);
+                        }}
                     />
                 </div>
             )}

@@ -7,7 +7,7 @@ const defaultColumn = {
 };
 
 const GridConfigEditor = ({ gridConfig, onChange }) => {
-    const [selectedIndex, setSelectedIndex] = useState(null);
+    const [selectedIndex, setSelectedIndex] = useState(gridConfig.columns?.length > 0 ? 0 : null);
 
     const handleColumnChange = (e, key) => {
         const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
@@ -47,7 +47,7 @@ const GridConfigEditor = ({ gridConfig, onChange }) => {
                     }`}
                 >
                 <span>
-                    {col.dataIndex || `Column ${index + 1}`}
+                    {col.dataIndex || 'New Column'}
                 </span>
                 <button>
                     <Trash

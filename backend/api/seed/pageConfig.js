@@ -26,18 +26,34 @@ module.exports = async function seedPageConfig() {
         },
 
         button: [
-            { label: 'Add Product', action: 'create', method: 'POST', apiEndpoint: '/api/products' },
-            { label: 'Edit Product', action: 'edit', method: 'PUT', apiEndpoint: '/api/products/:id' },
-            { label: 'Delete Product', action: 'deleteProduct', method: 'DELETE', apiEndpoint: '/api/products/:id' },
+            { label: 'Create', action: 'create', callApi: 'create' },
+            { label: 'Edit', action: 'update', callApi: 'update' },
+            { label: 'Delete', action: 'delete', callApi: 'delete' },
         ],
 
-        api: {
-            get: '/products',
-            responseKey: "products",
-            totalKey: "total",
-            post: '/products',
-            put: '/products/:id',
-            delete: '/products/:id',
+        apiEndpoints: {
+            list: {
+                method: 'GET',
+                url: '/products',
+                responseKey: 'products',
+                totalKey: 'total',
+                type: 'find'
+            },
+            create:{
+                method: 'POST',
+                url: '/products',
+                type: 'create'
+            },
+            update: {	
+                method: 'PUT',
+                url: '/products/:id',
+                type: 'updateOne'
+            },
+            delete:{
+                method: 'DELETE',
+                url: '/products/:id',
+                type: 'destroyOne'
+            },
         },
 
         isActive: true,

@@ -11,7 +11,7 @@ const  defaultFields = {
 
 const FormConfigEditor = ({ formConfig, onChange }) => {
 
-    const [selectedIndex, setSelectedIndex] = useState(null);
+    const [selectedIndex, setSelectedIndex] = useState(formConfig.fields?.length > 0 ? 0 : null);
 
     const handleFieldChange = (e, key) => {
         const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
@@ -52,7 +52,7 @@ const FormConfigEditor = ({ formConfig, onChange }) => {
                             className={`flex justify-between items-center cursor-pointer p-2 rounded ${selectedIndex === index ? 'bg-blue-100 font-bold' : 'hover:bg-gray-100'}`}
                         >
                             <span>
-                                {field.name || `Field ${index + 1}`}
+                                {field.name || 'New Field'}
                             </span>
                         
                             <button>

@@ -87,8 +87,8 @@ const EditPageConfig = () => {
 
             {currentTab === 'api' && (
                 <ApiConfigEditor
-                    apiConfig={pageConfig.api}
-                    onChange={(updatedApi) => setPageConfig(prev => ({ ...prev, api: updatedApi }))}
+                    apiConfig={pageConfig.apiEndpoints}
+                    onChange={(updatedApi) => setPageConfig(prev => ({ ...prev, apiEndpoints: updatedApi }))}
                 />
             )}
 
@@ -103,11 +103,11 @@ const EditPageConfig = () => {
         {/* Save button */}
         <div className="mt-4">
             <button
-            onClick={handleSave}
-            disabled={saving}
-            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                onClick={handleSave}
+                disabled={saving}
+                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
             >
-            {saving ? 'Saving...' : 'Save Config'}
+                {saving ? 'Saving...' : 'Save Config'}
             </button>
         </div>
         </div>

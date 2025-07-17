@@ -3,8 +3,16 @@ import { useEffect, useState } from 'react';
 import api from '../../api/api';
 import DynamicForm from './DynamicForm';
 import DynamicTable from './DynamicTable';
+import { useAuth } from '../../contexts/AuthContext';
 
 const DynamicPage = () => {
+
+    const { user } = useAuth();
+    const canCreate = () => {
+        if (!user || !user.roles) return false;
+        return user.roles.includes('admin') || user.roles.includes('editor');
+    };
+
     const { pageKey } = useParams();
     const [config, setConfig] = useState(null);
     const [data, setData] = useState([]); 
@@ -113,7 +121,7 @@ const DynamicPage = () => {
         <div className="p-6">
             <h1 className="text-2xl font-bold mb-4">{config.title}</h1>
 
-            {config.button && (
+            {canCreate() && config.button && (
                 <div className="mb-4 float-end">
                     {getButtonByAction('create') && (
                         <button 
@@ -124,7 +132,7 @@ const DynamicPage = () => {
                         </button>
                     )}
                 </div>
-            )}
+            )}            
 
             {/* Form */}
             {showForm && config.form && (
@@ -168,6 +176,7 @@ const DynamicPage = () => {
                             if (action === 'update') return handleEdit(item);
                             if (action === 'delete') return handleDelete(item);
                         }}
+                        userRoles={user?.roles || []}
                     />
                 </div>
             )}

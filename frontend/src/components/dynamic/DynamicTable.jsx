@@ -1,10 +1,34 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { DebounceInput } from 'react-debounce-input';
 
-const DynamicTable = ({ columns, data, onFilterChange, onAction, buttonConfig = [] }) => {
+const DynamicTable = ({ columns, data, onFilterChange, onAction, buttonConfig = [], userRoles = [] }) => {
 
     const [localFilters, setLocalFilters] = useState({});
     const [openMenuIndex, setOpenMenuIndex] = useState(null);
+
+    const isViewer = useMemo(() => userRoles.includes('viewer'), [userRoles]);
+
+    const filteredColumns = useMemo(() => {
+        return columns.filter(col => col.dataIndex !== 'createdAt' || !isViewer);
+    }, [columns, isViewer]);
+
+    const actionRoleMap = {
+        update: ['admin', 'editor'],
+        delete: ['admin']
+    }
+
+    // const filteredButtonConfig = useMemo(() => {
+    //     return isViewer ? [] : buttonConfig;
+    // }, [buttonConfig, isViewer]);
+
+    const filteredButtonConfig = useMemo(() => {
+        if (isViewer) return [];
+        return buttonConfig.filter(btn => {
+            const allowedRoles = actionRoleMap[btn.action] || [];
+            if (!allowedRoles.length) return true; 
+            return allowedRoles.some(role => userRoles.includes(role));
+        });
+    }, [buttonConfig, isViewer, userRoles]);
 
     const handleInputChange = (key, value) => {
         const updated = { ...localFilters, [key]: value };
@@ -22,17 +46,17 @@ const DynamicTable = ({ columns, data, onFilterChange, onAction, buttonConfig = 
         <table className="w-full border-collapse border border-gray-300 mt-4">
             <thead className="bg-gray-100">
                 <tr>
-                    {columns.map((column, index) => (
+                    {filteredColumns.map((column, index) => (
                         <th key={index} className="border p-2 text-center">{column.title}</th>
                     ))}
 
-                    {buttonConfig.length > 0 && (
+                    {filteredButtonConfig.length > 0 && (
                         <th className='border p-2 text-center'>Actions</th>
                     )}
                 </tr>
 
                 <tr>
-                    {columns.map(column => (
+                    {filteredColumns.map(column => (
                         <th key={column.dataIndex} className="border p-2">
                             {column.allowFiltering ? (
                                 <DebounceInput
@@ -47,7 +71,7 @@ const DynamicTable = ({ columns, data, onFilterChange, onAction, buttonConfig = 
                             ) : null}
                         </th>
                     ))}
-                    {buttonConfig.length > 0 && <th></th>}
+                    {filteredButtonConfig.length > 0 && <th></th>}
                 </tr>
             </thead>
 
@@ -55,11 +79,11 @@ const DynamicTable = ({ columns, data, onFilterChange, onAction, buttonConfig = 
                 {Array.isArray(data) && data.length > 0 ? (
                     data.map((item, rowIndex) => (
                         <tr key={rowIndex} className="hover:bg-gray-50">
-                            {columns.map((col, colIndex) => (
+                            {filteredColumns.map((col, colIndex) => (
                                 <td key={colIndex} className="border p-2">{item[col.dataIndex]}</td>
                             ))}
 
-                            {buttonConfig.length > 0 && (
+                            {filteredButtonConfig.length > 0 && (
                                 <td className="border p-2 relative text-center">
                                     <button
                                         onClick={() => toggleMenu(rowIndex)}
@@ -70,7 +94,7 @@ const DynamicTable = ({ columns, data, onFilterChange, onAction, buttonConfig = 
 
                                     {openMenuIndex === rowIndex && (
                                         <ul className='absolute bg-white border rounded shadow-lg right-0 z-10'>
-                                            {buttonConfig.map((btn, i) => (
+                                            {filteredButtonConfig.map((btn, i) => (
                                                 <li
                                                     key = {i}
                                                     onClick={() =>{
@@ -92,7 +116,7 @@ const DynamicTable = ({ columns, data, onFilterChange, onAction, buttonConfig = 
                     ))
                 ) : (
                     <tr>
-                        <td colSpan={columns.length + (buttonConfig.length > 0 ? 1 : 0)} className="text-center p-4">
+                        <td colSpan={columns.length + (filteredButtonConfig.length > 0 ? 1 : 0)} className="text-center p-4">
                             No data available
                         </td>
                     </tr>

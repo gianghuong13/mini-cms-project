@@ -8,6 +8,7 @@
  * https://sailsjs.com/docs/concepts/policies
  */
 
+
 module.exports.policies = {
 
   /***************************************************************************
@@ -17,6 +18,28 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-  // '*': true,
+  '*': false,
+
+  AuthController: {
+    login: true,
+    register: true, 
+    profile: ['isAuthenticated']
+  },
+
+  UserController: {
+    '*': ['isAuthenticated', 'hasPermission']
+  },
+
+  RoleController: {
+    '*': ['isAuthenticated', 'hasPermission']
+  },
+
+  PageConfigController: {
+    '*': ['isAuthenticated', 'hasPermission'],
+  },
+
+  ProductController: {
+    '*': ['isAuthenticated', 'hasPermission']
+  },
 
 };
